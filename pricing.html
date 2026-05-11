@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — caveman</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #F59E0B;
+  --brand-dark: #D97706;
+  --brand-light: #FEF3C7;
+  --bg: #FAFAF9;
+  --bg-dark: #1C1917;
+  --fg: #1C1917;
+  --fg-light: #78716C;
+  --accent: #F97316;
+  --slate: #334155;
+  --slate-light: #64748B;
+  --white: #FFFFFF;
+  --border: #E7E5E4;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(250,250,249,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-weight: 800; font-size: 1.5rem; color: var(--fg); display: flex; align-items: center; gap: 8px; }
+.nav-logo .ember { color: var(--brand); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--slate-light); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--brand-dark); }
+.nav-links a.active { border-bottom: 2px solid var(--brand); padding-bottom: 2px; }
+.nav-cta { background: var(--brand); color: var(--white); padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+.nav-cta:hover { background: var(--brand-dark); }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+.nav-toggle svg { width: 28px; height: 28px; color: var(--fg); }
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); flex-direction: column; padding: 24px; gap: 16px; border-bottom: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+  .nav-links.open { display: flex; }
+}
+
+.page-header { max-width: 1200px; margin: 0 auto; padding: 64px 24px 24px; text-align: center; }
+.page-header h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px; }
+.page-header p { font-size: 1.15rem; color: var(--fg-light); max-width: 560px; margin: 0 auto; }
+
+/* TOGGLE */
+.toggle-wrap { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 32px 0 48px; }
+.toggle-label { font-weight: 600; font-size: 0.95rem; color: var(--fg-light); cursor: pointer; }
+.toggle-label.active { color: var(--fg); }
+.toggle-switch { width: 52px; height: 28px; background: var(--border); border-radius: 999px; position: relative; cursor: pointer; border: none; transition: background 0.2s; }
+.toggle-switch.on { background: var(--brand); }
+.toggle-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: var(--white); border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.toggle-switch.on::after { transform: translateX(24px); }
+.save-badge { background: var(--brand-light); color: var(--brand-dark); font-weight: 600; font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; }
+
+/* PRICING CARDS */
+.pricing-grid { max-width: 1100px; margin: 0 auto; padding: 0 24px 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; max-width: 440px; } }
+
+.price-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 28px; position: relative; transition: box-shadow 0.2s; }
+.price-card:hover { box-shadow: var(--shadow-lg); }
+.price-card.featured { border: 2px solid var(--brand); }
+.price-card.featured .popular-tag { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--brand); color: var(--white); font-size: 0.8rem; font-weight: 700; padding: 4px 16px; border-radius: 999px; }
+.price-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.price-card .desc { font-size: 0.9rem; color: var(--fg-light); margin-bottom: 20px; }
+.price-amount { font-size: 2.8rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+.price-amount span { font-size: 1rem; font-weight: 500; color: var(--fg-light); }
+.price-period { font-size: 0.85rem; color: var(--fg-light); margin-bottom: 24px; }
+.price-features { list-style: none; margin-bottom: 28px; }
+.price-features li { padding: 6px 0; font-size: 0.93rem; color: var(--slate); display: flex; align-items: center; gap: 8px; }
+.price-features li::before { content: '✓'; color: var(--brand); font-weight: 700; }
+.price-btn { display: block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 1rem; text-align: center; border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.price-btn:hover { transform: translateY(-1px); }
+.price-btn.primary { background: var(--brand); color: var(--white); }
+.price-btn.primary:hover { background: var(--brand-dark); }
+.price-btn.outline { background: transparent; color: var(--fg); border: 2px solid var(--border); }
+.price-btn.outline:hover { border-color: var(--brand); }
+
+/* FAQ */
+.faq { max-width: 720px; margin: 0 auto; padding: 0 24px 80px; }
+.faq h2 { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 36px; }
+.faq details { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+.faq summary { padding: 18px 24px; font-weight: 600; font-size: 1rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; font-size: 1.4rem; color: var(--brand); font-weight: 700; transition: transform 0.2s; }
+.faq details[open] summary::after { content: '−'; }
+.faq .faq-body { padding: 0 24px 18px; color: var(--fg-light); font-size: 0.95rem; line-height: 1.6; }
+
+.footer { background: var(--bg-dark); border-top: 1px solid #292524; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 40px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-brand { color: #A8A29E; font-weight: 700; font-size: 1.1rem; }
+.footer-brand span { color: var(--brand); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: #78716C; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--brand); }
+.footer-copy { color: #57534E; font-size: 0.85rem; width: 100%; text-align: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="caveman home"><span class="ember">🔥</span> caveman</a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="pricing.html" class="active">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Get Early Access</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <h1>Simple, transparent pricing</h1>
+  <p>Start free. Upgrade when your app takes off. No hidden fees, no per-seat charges, no surprises.</p>
+</section>
+
+<div class="toggle-wrap">
+  <span class="toggle-label active" id="label-monthly">Monthly</span>
+  <button class="toggle-switch" id="billing-toggle" role="switch" aria-checked="false" aria-label="Toggle annual billing"></button>
+  <span class="toggle-label" id="label-annual">Annual</span>
+  <span class="save-badge">Save 20%</span>
+</div>
+
+<section class="pricing-grid" aria-label="Pricing plans">
+  <div class="price-card">
+    <h3>Starter</h3>
+    <p class="desc">Perfect for validating your first idea</p>
+    <div class="price-amount" data-monthly="0" data-annual="0">$0<span>/mo</span></div>
+    <div class="price-period">Free forever</div>
+    <ul class="price-features">
+      <li>1 app project</li>
+      <li>500 AI generations per month</li>
+      <li>Community support</li>
+      <li>caveman subdomain hosting</li>
+      <li>Basic analytics</li>
+    </ul>
+    <a href="contact.html"><button class="price-btn outline">Get Started Free</button></a>
+  </div>
+  <div class="price-card featured">
+    <div class="popular-tag">Most Popular</div>
+    <h3>Pro</h3>
+    <p class="desc">For founders ready to launch and grow</p>
+    <div class="price-amount" data-monthly="49" data-annual="39">$49<span>/mo</span></div>
+    <div class="price-period">Billed <span class="period-text">monthly</span></div>
+    <ul class="price-features">
+      <li>Unlimited app projects</li>
+      <li>Unlimited AI generations</li>
+      <li>Priority support (under 4h)</li>
+      <li>Custom domain + SSL</li>
+      <li>Full analytics dashboard</li>
+      <li>Built-in auth & payments</li>
+      <li>Code export</li>
+    </ul>
+    <a href="contact.html"><button class="price-btn primary">Start 14-Day Free Trial</button></a>
+  </div>
+  <div class="price-card">
+    <h3>Enterprise</h3>
+    <p class="desc">For teams with advanced needs</p>
+    <div class="price-amount" data-monthly="199" data-annual="159">$199<span>/mo</span></div>
+    <div class="price-period">Billed <span class="period-text">monthly</span></div>
+    <ul class="price-features">
+      <li>Everything in Pro</li>
+      <li>Dedicated account manager</li>
+      <li>SSO & SAML integration</li>
+      <li>Custom AI model training</li>
+      <li>SLA with 99.9% uptime</li>
+      <li>White-label deployment</li>
+      <li>On-prem option available</li>
+    </ul>
+    <a href="contact.html"><button class="price-btn outline">Contact Sales</button></a>
+  </div>
+</section>
+
+<section class="faq">
+  <h2>Frequently asked questions</h2>
+  <details>
+    <summary>Can I really build a complete app without coding?</summary>
+    <div class="faq-body">Absolutely. caveman generates production-ready code from your natural language descriptions. You describe what you want — user flows, features, design preferences — and the AI handles the frontend, backend, database, and deployment. Thousands of non-technical founders have already launched real products.</div>
+  </details>
+  <details>
+    <summary>What happens if I outgrow caveman?</summary>
+    <div class="faq-body">You own your code. On Pro and Enterprise plans, you can export the full source code at any time and continue development with your own engineering team. There's no lock-in — we want you to succeed whether you stay with us or not.</div>
+  </details>
+  <details>
+    <summary>How is this different from no-code tools like Bubble?</summary>
+    <div class="faq-body">No-code tools give you a visual builder with constraints. caveman generates actual code with no limitations on logic or complexity. You get the speed of no-code with the power of custom development — and you can always export and own your codebase.</div>
+  </details>
+  <details>
+    <summary>Can I cancel or change plans anytime?</summary>
+    <div class="faq-body">Yes. You can upgrade, downgrade, or cancel at any time from your dashboard. If you cancel a paid plan, you keep access through the end of your billing period. No cancellation fees, no questions asked.</div>
+  </details>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span>🔥</span> caveman</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">About</a>
+    </div>
+    <div class="footer-copy">© 2026 caveman. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  toggle.addEventListener('click', function(){
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  // Pricing toggle
+  const billingToggle = document.getElementById('billing-toggle');
+  const labelMonthly = document.getElementById('label-monthly');
+  const labelAnnual = document.getElementById('label-annual');
+  const amounts = document.querySelectorAll('.price-amount');
+  const periodTexts = document.querySelectorAll('.period-text');
+  let isAnnual = false;
+
+  billingToggle.addEventListener('click', function(){
+    isAnnual = !isAnnual;
+    billingToggle.classList.toggle('on', isAnnual);
+    billingToggle.setAttribute('aria-checked', isAnnual);
+    labelMonthly.classList.toggle('active', !isAnnual);
+    labelAnnual.classList.toggle('active', isAnnual);
+
+    amounts.forEach(function(el){
+      const monthly = el.getAttribute('data-monthly');
+      const annual = el.getAttribute('data-annual');
+      const price = isAnnual ? annual : monthly;
+      el.innerHTML = '$' + price + '<span>/mo</span>';
+    });
+    periodTexts.forEach(function(el){
+      el.textContent = isAnnual ? 'annually' : 'monthly';
+    });
+  });
+})();
+</script>
+</body>
+</html>
