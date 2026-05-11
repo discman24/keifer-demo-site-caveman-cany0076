@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>caveman — Your AI Cofounder</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #F59E0B;
+  --brand-dark: #D97706;
+  --brand-light: #FEF3C7;
+  --bg: #FAFAF9;
+  --bg-dark: #1C1917;
+  --fg: #1C1917;
+  --fg-light: #78716C;
+  --accent: #F97316;
+  --slate: #334155;
+  --slate-light: #64748B;
+  --white: #FFFFFF;
+  --border: #E7E5E4;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(250,250,249,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-weight: 800; font-size: 1.5rem; color: var(--fg); display: flex; align-items: center; gap: 8px; }
+.nav-logo .ember { color: var(--brand); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--slate-light); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--brand-dark); }
+.nav-links a.active { border-bottom: 2px solid var(--brand); padding-bottom: 2px; }
+.nav-cta { background: var(--brand); color: var(--white); padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+.nav-cta:hover { background: var(--brand-dark); }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+.nav-toggle svg { width: 28px; height: 28px; color: var(--fg); }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); flex-direction: column; padding: 24px; gap: 16px; border-bottom: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+  .nav-links.open { display: flex; }
+}
+
+/* HERO */
+.hero { max-width: 1200px; margin: 0 auto; padding: 80px 24px 64px; text-align: center; }
+.hero-badge { display: inline-block; background: var(--brand-light); color: var(--brand-dark); font-weight: 600; font-size: 0.85rem; padding: 6px 16px; border-radius: 999px; margin-bottom: 24px; }
+.hero h1 { font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1; color: var(--fg); margin-bottom: 20px; }
+.hero h1 span { color: var(--brand); }
+.hero p { font-size: 1.25rem; color: var(--fg-light); max-width: 640px; margin: 0 auto 40px; }
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--brand); color: var(--white); padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: 1.05rem; border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.btn-primary:hover { background: var(--brand-dark); transform: translateY(-1px); }
+.btn-secondary { background: transparent; color: var(--fg); padding: 14px 32px; border-radius: 10px; font-weight: 600; font-size: 1.05rem; border: 2px solid var(--border); cursor: pointer; transition: border-color 0.2s; }
+.btn-secondary:hover { border-color: var(--brand); }
+
+/* SOCIAL PROOF */
+.social-proof { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; text-align: center; }
+.social-proof p { font-size: 0.9rem; color: var(--fg-light); margin-bottom: 24px; font-weight: 500; }
+.logos { display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; opacity: 0.5; }
+.logos span { font-size: 1.3rem; font-weight: 700; color: var(--slate); letter-spacing: -0.5px; }
+
+/* FEATURES TRIPLET */
+.features-section { max-width: 1200px; margin: 0 auto; padding: 64px 24px; }
+.features-section h2 { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+.features-section .subtitle { text-align: center; color: var(--fg-light); font-size: 1.1rem; margin-bottom: 48px; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+@media (max-width: 768px) { .feature-grid { grid-template-columns: 1fr; } }
+.feature-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: box-shadow 0.2s, transform 0.2s; }
+.feature-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.feature-icon { width: 48px; height: 48px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.feature-icon svg { width: 24px; height: 24px; color: var(--brand-dark); }
+.feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+.feature-card p { color: var(--fg-light); font-size: 0.95rem; }
+
+/* CTA STRIP */
+.cta-strip { background: var(--bg-dark); margin-top: 64px; }
+.cta-inner { max-width: 1200px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+.cta-inner h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--white); margin-bottom: 16px; }
+.cta-inner p { color: #A8A29E; font-size: 1.15rem; margin-bottom: 36px; max-width: 540px; margin-left: auto; margin-right: auto; }
+.cta-inner .btn-primary { font-size: 1.1rem; padding: 16px 40px; }
+
+/* FOOTER */
+.footer { background: var(--bg-dark); border-top: 1px solid #292524; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 40px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-brand { color: #A8A29E; font-weight: 700; font-size: 1.1rem; }
+.footer-brand span { color: var(--brand); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: #78716C; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--brand); }
+.footer-copy { color: #57534E; font-size: 0.85rem; width: 100%; text-align: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="caveman home"><span class="ember">🔥</span> caveman</a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="features.html">Features</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Get Early Access</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">🚀 Now in public beta</div>
+  <h1>Your AI cofounder<br>that <span>actually ships</span></h1>
+  <p>Describe your app in plain English. caveman handles the build, deploy, and iteration — so non-technical founders can go from idea to live product in hours, not months.</p>
+  <div class="hero-actions">
+    <a href="contact.html"><button class="btn-primary">Start Building Free</button></a>
+    <a href="features.html"><button class="btn-secondary">See How It Works</button></a>
+  </div>
+</section>
+
+<section class="social-proof" aria-label="Trusted by companies">
+  <p>Trusted by founders building the next big thing</p>
+  <div class="logos">
+    <span>Launchpad</span>
+    <span>NomadHQ</span>
+    <span>SeedStack</span>
+    <span>BuildFast</span>
+  </div>
+</section>
+
+<section class="features-section">
+  <h2>Ship apps without writing code</h2>
+  <p class="subtitle">Three steps from idea to live product</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+      </div>
+      <h3>Describe what you want</h3>
+      <p>Just tell caveman what your app should do. Use plain English — no wireframes, no specs, no technical jargon required.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      </div>
+      <h3>AI builds it live</h3>
+      <p>Watch your app come together in real-time. caveman generates the frontend, backend, database, and API — fully working code.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+      </div>
+      <h3>Deploy and iterate</h3>
+      <p>One click to go live. Then keep chatting to add features, fix bugs, or pivot entirely. Your AI cofounder never sleeps.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="cta-inner">
+    <h2>Stop waiting for a technical cofounder</h2>
+    <p>Join thousands of non-technical founders who are already shipping real products with caveman.</p>
+    <a href="contact.html"><button class="btn-primary">Get Started — It's Free</button></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span>🔥</span> caveman</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">About</a>
+    </div>
+    <div class="footer-copy">© 2026 caveman. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  toggle.addEventListener('click', function(){
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+})();
+</script>
+</body>
+</html>
