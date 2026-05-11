@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features — caveman</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #F59E0B;
+  --brand-dark: #D97706;
+  --brand-light: #FEF3C7;
+  --bg: #FAFAF9;
+  --bg-dark: #1C1917;
+  --fg: #1C1917;
+  --fg-light: #78716C;
+  --accent: #F97316;
+  --slate: #334155;
+  --slate-light: #64748B;
+  --white: #FFFFFF;
+  --border: #E7E5E4;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(250,250,249,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-weight: 800; font-size: 1.5rem; color: var(--fg); display: flex; align-items: center; gap: 8px; }
+.nav-logo .ember { color: var(--brand); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--slate-light); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--brand-dark); }
+.nav-links a.active { border-bottom: 2px solid var(--brand); padding-bottom: 2px; }
+.nav-cta { background: var(--brand); color: var(--white); padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+.nav-cta:hover { background: var(--brand-dark); }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+.nav-toggle svg { width: 28px; height: 28px; color: var(--fg); }
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); flex-direction: column; padding: 24px; gap: 16px; border-bottom: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+  .nav-links.open { display: flex; }
+}
+
+.page-header { max-width: 1200px; margin: 0 auto; padding: 64px 24px 32px; text-align: center; }
+.page-header h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px; }
+.page-header p { font-size: 1.15rem; color: var(--fg-light); max-width: 600px; margin: 0 auto; }
+
+.features-grid { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+@media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+
+.f-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: box-shadow 0.2s, transform 0.2s; }
+.f-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.f-icon { width: 52px; height: 52px; background: var(--brand-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.f-icon svg { width: 26px; height: 26px; color: var(--brand-dark); stroke-width: 2; }
+.f-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+.f-card p { color: var(--fg-light); font-size: 0.95rem; line-height: 1.5; }
+
+.comparison { max-width: 900px; margin: 0 auto; padding: 64px 24px 80px; }
+.comparison h2 { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+.comparison .subtitle { text-align: center; color: var(--fg-light); margin-bottom: 40px; font-size: 1.05rem; }
+.comp-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.comp-table th, .comp-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+.comp-table thead th { background: var(--bg-dark); color: var(--white); font-weight: 600; }
+.comp-table thead th:first-child { border-radius: 0; }
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table .check { color: var(--brand); font-weight: 700; }
+.comp-table .cross { color: #D6D3D1; }
+@media (max-width: 768px) {
+  .comp-table { font-size: 0.85rem; }
+  .comp-table th, .comp-table td { padding: 12px 10px; }
+}
+
+.footer { background: var(--bg-dark); border-top: 1px solid #292524; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 40px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-brand { color: #A8A29E; font-weight: 700; font-size: 1.1rem; }
+.footer-brand span { color: var(--brand); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: #78716C; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--brand); }
+.footer-copy { color: #57534E; font-size: 0.85rem; width: 100%; text-align: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="caveman home"><span class="ember">🔥</span> caveman</a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="features.html" class="active">Features</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Get Early Access</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <h1>Everything you need to ship</h1>
+  <p>caveman isn't just a code generator. It's a full AI development partner that handles the entire stack — so you focus on your vision.</p>
+</section>
+
+<section class="features-grid" aria-label="Feature list">
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+    </div>
+    <h3>Natural Language Building</h3>
+    <p>Describe your app like you'd explain it to a friend. caveman interprets your intent and generates working software from conversational input.</p>
+  </div>
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/><path stroke-linecap="round" d="M9 12h6M12 9v6"/></svg>
+    </div>
+    <h3>Full-Stack Generation</h3>
+    <p>Frontend, backend, database, authentication, and APIs — caveman builds the complete stack, not just a mockup or prototype.</p>
+  </div>
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    </div>
+    <h3>One-Click Deploy</h3>
+    <p>Go from chat to production in one click. caveman handles hosting, SSL, domains, and scaling so you never touch infrastructure.</p>
+  </div>
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+    </div>
+    <h3>Iterative Refinement</h3>
+    <p>Keep chatting to add features, change designs, or restructure your app. Each conversation builds on the last — like working with a real cofounder.</p>
+  </div>
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    </div>
+    <h3>Built-in Auth & Security</h3>
+    <p>User login, role-based access, and security best practices are baked in automatically. No security expertise needed on your end.</p>
+  </div>
+  <div class="f-card">
+    <div class="f-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+    </div>
+    <h3>Analytics Dashboard</h3>
+    <p>Track users, page views, and custom events out of the box. Understand what's working and iterate with data, not guesswork.</p>
+  </div>
+</section>
+
+<section class="comparison">
+  <h2>caveman vs. the alternatives</h2>
+  <p class="subtitle">See how we stack up against other ways to build your app</p>
+  <table class="comp-table" role="table">
+    <thead>
+      <tr>
+        <th scope="col">Capability</th>
+        <th scope="col">caveman</th>
+        <th scope="col">Freelancer</th>
+        <th scope="col">No-Code Tools</th>
+        <th scope="col">DIY Coding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Time to launch</td>
+        <td class="check">Hours</td>
+        <td>Weeks</td>
+        <td>Days</td>
+        <td>Months</td>
+      </tr>
+      <tr>
+        <td>No code required</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+      </tr>
+      <tr>
+        <td>Full custom logic</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>Instant iteration</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+      </tr>
+      <tr>
+        <td>Own your code</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>Cost under $200/mo</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span>🔥</span> caveman</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">About</a>
+    </div>
+    <div class="footer-copy">© 2026 caveman. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  toggle.addEventListener('click', function(){
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+})();
+</script>
+</body>
+</html>
